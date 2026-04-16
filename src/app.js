@@ -4,8 +4,14 @@ const app = express();
 
 app.use(express.json());
 
-// Health check
-app.get('/', (req, res) => res.json({ status: 'Corsica Subscriptions running' }));
+// Health check / Shopify install redirect
+app.get('/', (req, res) => {
+  const shop = req.query.shop;
+  if (shop) {
+    return res.redirect(`/auth?shop=${shop}`);
+  }
+  res.json({ status: 'Corsica Subscriptions running' });
+});
 
 // OAuth routes
 app.use('/auth', require('./routes/auth'));
